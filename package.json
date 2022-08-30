@@ -14,6 +14,7 @@
     "build:assets:cjs": "npx copyfiles src/assets/* lib/cjs/assets/ -u 2",
     "build:esm": "tsc && npm run build:assets:esm",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs && npm run build:assets:cjs",
+    "prepublishOnly": "npm run build",
     "release": "npx np --no-tests --no-2fa"
   },
   "author": "",

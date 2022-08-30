@@ -12,9 +12,8 @@ export const useHello3 = () => {
     user: !ctx.token
       ? undefined
       : {
-          id: DID.fromAddress(ctx.issuer ?? ""),
+          did: DID.fromAddress(ctx.issuer ?? ""),
           address: DID.toAddress(ctx.issuer ?? ""),
-          holder: DID.fromAddress(ctx.holder ?? ""),
           token: ctx.token!,
         },
   };

@@ -1,17 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { verifyToken } from "@hello3/core";
 import { getDeepLinkFromSocket, createSocketConnection } from "../sockets";
 import { Config, DEFAULT_STORAGE_KEY } from "./config";
 import { useLocalStorage } from "./use-local-storage";
-
-type VerifiableIdentityTokenData = {
-  issuer: string;
-  holder: string;
-};
-
-const verifyToken = async (_: any): Promise<VerifiableIdentityTokenData> => ({
-  issuer: "did:ethr:issuer",
-  holder: "did:ethr:holder",
-});
 
 export const useIdentity = (config?: Config) => {
   const [issuer, setIssuer] = useState<string | null>(null);
@@ -29,7 +20,12 @@ export const useIdentity = (config?: Config) => {
           setIssuer(payload.issuer);
           setHolder(payload.holder);
         })
-        .catch(console.error);
+        .catch((exc) => {
+          setToken(null);
+          if (config?.onSignInError) {
+            config.onSignInError(exc);
+          }
+        });
     } else {
       setIssuer(null);
       setHolder(null);

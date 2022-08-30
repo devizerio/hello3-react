@@ -5,4 +5,5 @@ export type Config = {
   connector?: string;
   connectorProtocol?: string;
   storageKey?: string;
+  onSignInError?: (error: Error) => void;
 };

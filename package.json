@@ -1,6 +1,6 @@
 {
   "name": "@hello3/react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React bindings for hello3 sdks",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",

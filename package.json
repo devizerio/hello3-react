@@ -1,0 +1,29 @@
+{
+  "name": "@hello3/react",
+  "version": "0.0.1",
+  "description": "React bindings for hello3 sdks",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "scripts": {
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "/lib"
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.8.2"
+  }
+}

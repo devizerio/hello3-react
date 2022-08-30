@@ -9,9 +9,11 @@
     "access": "public"
   },
   "scripts": {
-    "build": "yarn build:esm && yarn build:cjs",
-    "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:assets:esm": "npx copyfiles src/assets/* lib/esm/assets/ -u 2",
+    "build:assets:cjs": "npx copyfiles src/assets/* lib/cjs/assets/ -u 2",
+    "build:esm": "tsc && npm run build:assets:esm",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs && npm run build:assets:cjs",
     "release": "npx np --no-tests --no-2fa"
   },
   "author": "",
@@ -26,8 +28,14 @@
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-modal": "^3.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.8.2"
+  },
+  "dependencies": {
+    "react-modal": "^3.15.1",
+    "react-qr-code": "^2.0.7",
+    "socket.io-client": "^4.5.1"
   }
 }

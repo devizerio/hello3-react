@@ -9,6 +9,7 @@ export type ProviderProps = {
   connector?: string;
   connectorProtocol?: string;
   storageKey?: string;
+  onSignInError?: (error: Error) => void;
 };
 
 export const Hello3Provider: React.FC<ProviderProps> = (props) => {
@@ -18,10 +19,10 @@ export const Hello3Provider: React.FC<ProviderProps> = (props) => {
   const { uri, token, issuer, holder, reset } = useIdentity(params);
 
   useEffect(() => {
-    if (token) {
+    if (issuer) {
       setShowSignInModal(false);
     }
-  }, [token, setShowSignInModal]);
+  }, [issuer, setShowSignInModal]);
 
   const context: Hello3ContextType = {
     showSignInModal: showSignInModal,

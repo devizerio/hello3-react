@@ -6,5 +6,5 @@ export const getDeepLinkFromSocket = (session: Socket): string => {
   const config: Config = session._verifiableIdentityConfig ?? {};
   const connector = config?.connector ?? DEFAULT_CONNECTOR;
   const domain = config?.domain ?? getDefaultDomain();
-  return `deth://auth?connector=${connector}&domain=${domain}&session=${session.id}`;
+  return `hello3://auth?connector=${connector}&domain=${domain}&session=${session.id}`;
 };

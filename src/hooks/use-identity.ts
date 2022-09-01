@@ -15,7 +15,7 @@ export const useIdentity = (config?: Config) => {
 
   useEffect(() => {
     if (token) {
-      verifyToken(token)
+      verifyToken(token, { domain: config?.domain })
         .then((payload) => {
           setIssuer(payload.issuer);
           setHolder(payload.holder);

@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { verifyToken } from "@hello3/core";
-import { getDeepLinkFromSocket, createSocketConnection } from "../sockets";
+import { createSocketConnection } from "../sockets";
 import { Config, DEFAULT_STORAGE_KEY } from "./config";
 import { useLocalStorage } from "./use-local-storage";
+import {
+  getCallbackDeepLinkFromSocket,
+  getConnectorDeepLinkFromSocket,
+} from "../sockets/get-deep-link-from-socket";
 
 export const useIdentity = (config?: Config) => {
   const [issuer, setIssuer] = useState<string | null>(null);
@@ -11,7 +15,10 @@ export const useIdentity = (config?: Config) => {
   const storageKey = config?.storageKey ?? DEFAULT_STORAGE_KEY;
   const [token, setToken] = useLocalStorage(storageKey);
 
-  const [uri, setUri] = useState<string | null>(null);
+  const [connectorUri, setConnectorUri] = useState<string | undefined>(
+    undefined
+  );
+  const [callbackUri, setCallbackUri] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (token) {
@@ -34,13 +41,22 @@ export const useIdentity = (config?: Config) => {
 
   useEffect(() => {
     if (token) {
-      setUri(null);
+      setConnectorUri(undefined);
+      setCallbackUri(undefined);
       return undefined;
     }
     const socket = createSocketConnection(config);
-    socket.on("connect", () => setUri(getDeepLinkFromSocket(socket)));
+    socket.on("connect", () => {
+      setConnectorUri(getConnectorDeepLinkFromSocket(socket));
+      try {
+        setCallbackUri(getCallbackDeepLinkFromSocket(socket));
+      } catch (e) {}
+    });
     socket.on("token", (token) => setToken(token));
-    socket.on("disconnect", () => setUri(null));
+    socket.on("disconnect", () => {
+      setConnectorUri(undefined);
+      setCallbackUri(undefined);
+    });
     return () => {
       socket.off("connect");
       socket.off("token");
@@ -50,5 +66,5 @@ export const useIdentity = (config?: Config) => {
 
   const reset = useCallback(() => setToken(null), [setToken]);
 
-  return { uri, token, issuer, holder, reset };
+  return { connectorUri, callbackUri, token, issuer, holder, reset };
 };

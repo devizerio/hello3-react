@@ -3,20 +3,26 @@ import { Hello3Context, Hello3ContextType } from "../contexts/hello3";
 import { useIdentity } from "../hooks";
 import { SignInModal } from "./SignInModal";
 
-export type ProviderProps = {
-  children: React.ReactNode;
+export type ProviderConfig = {
   domain?: string;
-  connector?: string;
-  connectorProtocol?: string;
+  connectorSocketEndpoint?: string;
+  connectorPostEndpoint?: string;
+  callbackEndpoint?: string;
   storageKey?: string;
   onSignInError?: (error: Error) => void;
 };
 
+export type ProviderProps = {
+  children: React.ReactNode;
+  config: ProviderConfig;
+};
+
 export const Hello3Provider: React.FC<ProviderProps> = (props) => {
-  const { children, ...params } = props;
+  const { children, config = {} } = props;
 
   const [showSignInModal, setShowSignInModal] = useState(false);
-  const { uri, token, issuer, holder, reset } = useIdentity(params);
+  const { connectorUri, callbackUri, token, issuer, holder, reset } =
+    useIdentity(config);
 
   useEffect(() => {
     if (issuer) {
@@ -27,7 +33,8 @@ export const Hello3Provider: React.FC<ProviderProps> = (props) => {
   const context: Hello3ContextType = {
     showSignInModal: showSignInModal,
     setShowSignInModal: setShowSignInModal,
-    uri: uri,
+    connectorUri,
+    callbackUri,
     token: token,
     issuer: issuer,
     holder: holder,
@@ -38,7 +45,8 @@ export const Hello3Provider: React.FC<ProviderProps> = (props) => {
     <Hello3Context.Provider value={context}>
       {children}
       <SignInModal
-        uri={uri ?? "invalid-hello3-uri"}
+        connectorUri={connectorUri}
+        callbackUri={callbackUri}
         open={showSignInModal}
         isSignedIn={!!token}
         onClose={() => setShowSignInModal(false)}

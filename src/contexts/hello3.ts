@@ -3,7 +3,8 @@ import { createContext } from "react";
 export type Hello3ContextType = {
   showSignInModal: boolean;
   setShowSignInModal: (show: boolean) => void;
-  uri?: string | null;
+  connectorUri?: string | null;
+  callbackUri?: string | null;
   token?: string | null;
   issuer?: string | null;
   holder?: string | null;

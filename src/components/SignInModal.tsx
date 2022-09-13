@@ -3,16 +3,18 @@ import Modal from "react-modal";
 import QRCode from "react-qr-code";
 
 import icon from "../assets/icon.png";
+import { Spinner } from "./LoadingSpinner";
 
 type Props = {
-  uri?: string;
+  connectorUri?: string;
+  callbackUri?: string;
   open: boolean;
   isSignedIn?: boolean;
   onClose: () => void;
 };
 
 export const SignInModal: React.FC<Props> = (props) => {
-  const { open, onClose, isSignedIn, uri = "" } = props;
+  const { open, onClose, isSignedIn, connectorUri, callbackUri } = props;
 
   useEffect(() => {
     if (isSignedIn) {
@@ -61,22 +63,42 @@ export const SignInModal: React.FC<Props> = (props) => {
             alt="Hello3"
           />
         </div>
-        <a href={uri}>
-          <QRCode size={256} value={uri} />
-        </a>
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: 24,
-            marginTop: 32,
-            fontSize: 12,
-            lineHeight: 1.5,
-            width: 256,
-          }}
-        >
-          Scan this QR code with the Hello3 app or tap it if you have Hello3
-          installed on this device.
-        </div>
+        {(connectorUri || callbackUri) && (
+          <>
+            <a href={callbackUri ?? connectorUri}>
+              <QRCode
+                size={256}
+                value={connectorUri ?? callbackUri ?? "invalid"}
+              />
+            </a>
+            <div
+              style={{
+                textAlign: "center",
+                marginBottom: 24,
+                marginTop: 32,
+                fontSize: 12,
+                lineHeight: 1.5,
+                width: 256,
+              }}
+            >
+              Scan this QR code with the Hello3 app or tap it if you have Hello3
+              installed on this device.
+            </div>
+          </>
+        )}
+        {!connectorUri && !callbackUri && (
+          <div
+            style={{
+              display: "flex",
+              height: 256,
+              width: 256,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Spinner />
+          </div>
+        )}
       </div>
     </Modal>
   );

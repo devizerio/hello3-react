@@ -20,19 +20,33 @@ export const useIdentity = (config?: Config) => {
   );
   const [callbackUri, setCallbackUri] = useState<string | undefined>(undefined);
 
+  const onTokenReceived = async (token: string) => {
+    try {
+      const payload = await verifyToken(token, { domain: config?.domain });
+      setIssuer(payload.issuer);
+      setHolder(payload.holder);
+    } catch (e) {
+      setToken(null);
+      if (config?.onSignInError) {
+        config.onSignInError(e);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const hello3token = queryParams.get("hello3token");
+
+    if (hello3token) {
+      setToken(hello3token);
+      queryParams.delete("hello3token");
+      window.history.replaceState(null, "", "?" + queryParams);
+    }
+  }, [window.location.search]);
+
   useEffect(() => {
     if (token) {
-      verifyToken(token, { domain: config?.domain })
-        .then((payload) => {
-          setIssuer(payload.issuer);
-          setHolder(payload.holder);
-        })
-        .catch((exc) => {
-          setToken(null);
-          if (config?.onSignInError) {
-            config.onSignInError(exc);
-          }
-        });
+      onTokenReceived(token);
     } else {
       setIssuer(null);
       setHolder(null);

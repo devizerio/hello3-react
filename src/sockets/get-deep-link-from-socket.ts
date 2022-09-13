@@ -22,5 +22,5 @@ export const getCallbackDeepLinkFromSocket = (session: Socket): string => {
   }
   const connector = config.callbackEndpoint;
   const domain = config?.domain ?? getDefaultDomain();
-  return `hello3://auth?connector=${connector}&domain=${domain}&session=${session.id}`;
+  return `hello3://auth?callback=${connector}&domain=${domain}&session=${session.id}`;
 };

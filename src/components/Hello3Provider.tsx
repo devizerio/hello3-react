@@ -1,34 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { Hello3Context, Hello3ContextType } from "../contexts/hello3";
-import { useIdentity } from "../hooks";
-import { SignInModal } from "./SignInModal";
+import React, { useEffect, useState } from 'react'
+import { Hello3Context, Hello3ContextType } from '../contexts/hello3'
+import { useIdentity } from '../hooks'
+import { SignInModal } from './SignInModal'
 
 export type ProviderConfig = {
-  domain?: string;
-  connectorSocketEndpoint?: string;
-  connectorPostEndpoint?: string;
-  callbackEndpoint?: string;
-  storageKey?: string;
-  onSignInError?: (error: Error) => void;
-};
+  domain?: string
+  connectorSocketEndpoint?: string
+  connectorPostEndpoint?: string
+  callbackEndpoint?: string
+  storageKey?: string
+  onSignInError?: (error: Error) => void
+}
 
 export type ProviderProps = {
-  children: React.ReactNode;
-  config: ProviderConfig;
-};
+  children: React.ReactNode
+  config: ProviderConfig
+}
 
-export const Hello3Provider: React.FC<ProviderProps> = (props) => {
-  const { children, config = {} } = props;
+export const Hello3Provider: React.FC<ProviderProps> = props => {
+  const { children, config = {} } = props
 
-  const [showSignInModal, setShowSignInModal] = useState(false);
-  const { connectorUri, callbackUri, token, issuer, holder, reset } =
-    useIdentity(config);
+  const [showSignInModal, setShowSignInModal] = useState(false)
+  const { connectorUri, callbackUri, token, issuer, holder, reset } = useIdentity(config)
 
   useEffect(() => {
     if (issuer) {
-      setShowSignInModal(false);
+      setShowSignInModal(false)
     }
-  }, [issuer, setShowSignInModal]);
+  }, [issuer, setShowSignInModal])
 
   const context: Hello3ContextType = {
     showSignInModal: showSignInModal,
@@ -39,7 +38,7 @@ export const Hello3Provider: React.FC<ProviderProps> = (props) => {
     issuer: issuer,
     holder: holder,
     reset: reset,
-  };
+  }
 
   return (
     <Hello3Context.Provider value={context}>
@@ -52,5 +51,5 @@ export const Hello3Provider: React.FC<ProviderProps> = (props) => {
         onClose={() => setShowSignInModal(false)}
       />
     </Hello3Context.Provider>
-  );
-};
+  )
+}

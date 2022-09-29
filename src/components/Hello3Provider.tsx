@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Hello3Context, Hello3ContextType } from '../contexts/hello3'
 import { useIdentity } from '../hooks'
+import { log, setVerbose } from '../utils/logger'
 import { SignInModal } from './SignInModal'
 
 export type ProviderConfig = {
@@ -10,6 +11,7 @@ export type ProviderConfig = {
   callbackEndpoint?: string
   storageKey?: string
   onSignInError?: (error: Error) => void
+  verbose?: boolean
 }
 
 export type ProviderProps = {
@@ -24,7 +26,12 @@ export const Hello3Provider: React.FC<ProviderProps> = props => {
   const { connectorUri, callbackUri, token, issuer, holder, reset } = useIdentity(config)
 
   useEffect(() => {
+    setVerbose(!!config?.verbose)
+  }, [config?.verbose])
+
+  useEffect(() => {
     if (issuer) {
+      log.debug('detected issuer from token, closing the sign in modal')
       setShowSignInModal(false)
     }
   }, [issuer, setShowSignInModal])

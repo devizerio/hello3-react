@@ -30,7 +30,7 @@ function App() {
     <div>
       {user ? (
         <div>
-          <p>Hello, ${user.address}</p>
+          <p>Welcome, {user.address}!</p>
           <button onClick={clearSession}>Sign out</button>
         </div>
       ) : (

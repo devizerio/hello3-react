@@ -14,7 +14,7 @@ export type ProviderConfig = {
 
 export type ProviderProps = {
   children: React.ReactNode
-  config: ProviderConfig
+  config?: ProviderConfig
 }
 
 export const Hello3Provider: React.FC<ProviderProps> = props => {

@@ -72,7 +72,7 @@ export const SignInModal: React.FC<Props> = props => {
                 eyeRadius={12}
                 eyeColor="#012b73"
                 fgColor="#060606"
-                ecLevel="H"
+                ecLevel="L"
                 qrStyle="dots"
                 logoImage={icon}
                 value={connectorUri ?? callbackUri ?? 'invalid'}

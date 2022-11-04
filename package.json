@@ -15,6 +15,7 @@
     "build:esm": "tsc && npm run build:assets:esm",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs && npm run build:assets:cjs",
     "build:dev": "npm run build && rm -rf node_modules/react && rm -rf node_modules/react-dom",
+    "postinstall": "patch-package",
     "prepublishOnly": "npm run build",
     "release": "npx np --no-tests --no-2fa"
   },
@@ -33,6 +34,7 @@
     "@types/react-modal": "^3.13.1",
     "@types/styled-components": "^5.1.26",
     "np": "^7.6.2",
+    "patch-package": "^6.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "^4.8.2"

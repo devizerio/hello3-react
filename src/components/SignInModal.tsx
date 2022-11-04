@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Modal from 'react-modal'
-import QRCode from 'react-qr-code'
+import { QRCode } from 'react-qrcode-logo'
 
 import icon from '../assets/icon.png'
 import { log } from '../utils/logger'
@@ -43,14 +43,12 @@ export const SignInModal: React.FC<Props> = props => {
         },
         content: {
           backgroundColor: 'white',
-          borderRadius: '4px',
+          borderRadius: '8px',
           position: 'fixed',
           left: '50%',
           top: '50%',
           transform: 'translate(-50%,-50%)',
-          padding: '24px',
-          paddingLeft: '56px',
-          paddingRight: '56px',
+          padding: '6px',
           bottom: 'auto',
           right: 'auto',
           border: '0px',
@@ -63,29 +61,23 @@ export const SignInModal: React.FC<Props> = props => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: 12,
         }}
       >
-        <div style={{ width: 74, height: 94 }}>
-          <img style={{ margin: 12, marginBottom: 32 }} width={50} src={icon} alt="Hello3" />
-        </div>
         {(connectorUri || callbackUri) && (
           <>
             <a href={callbackUri ?? connectorUri}>
-              <QRCode size={256} value={connectorUri ?? callbackUri ?? 'invalid'} />
+              <QRCode
+                size={256}
+                removeQrCodeBehindLogo
+                eyeRadius={12}
+                eyeColor="#012b73"
+                fgColor="#060606"
+                ecLevel="H"
+                qrStyle="dots"
+                logoImage={icon}
+                value={connectorUri ?? callbackUri ?? 'invalid'}
+              />
             </a>
-            <div
-              style={{
-                textAlign: 'center',
-                marginBottom: 24,
-                marginTop: 32,
-                fontSize: 12,
-                lineHeight: 1.5,
-                width: 256,
-              }}
-            >
-              Scan this QR code with the Hello3 app or tap it if you have Hello3 installed on this device.
-            </div>
           </>
         )}
         {!connectorUri && !callbackUri && (

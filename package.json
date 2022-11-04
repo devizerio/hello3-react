@@ -22,7 +22,8 @@
   "author": "",
   "license": "ISC",
   "files": [
-    "/lib"
+    "/lib",
+    "/patches"
   ],
   "peerDependencies": {
     "react": ">16",
